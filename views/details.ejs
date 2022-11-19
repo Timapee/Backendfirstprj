@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/head.ejs') %> 
+<!-- Lets add a link to delete a particular item -->
+<!-- data-doc attribute -->
+<!-- dataset method in js -->
+
+<body>
+    <%- include('../partials/nav.ejs') %> 
+    <h2 style="text-align:center">Welcome to my EJS Details Page</h2>
+    <div class="details">
+        <div class="inner-details">
+            <h2><%= Blogs.name %> </h2>
+            <p><%= Blogs.title %> </p>
+            <p><%= Blogs.message %> </p>
+        </div>
+        <a class="delete" data-doc="<%= Blogs._id %> ">Delete</a>
+    </div>
+
+    <%- include('../partials/footer.ejs') %> 
+    <script>
+        // For the client side
+        const DIRT = document.querySelector('a.delete')
+        DIRT.addEventListener('click', () => {
+            const endPoint = `/index/${DIRT.dataset.doc}`
+            // const endPoint = '/index/' + DIRT.dataset.doc
+            fetch(endPoint, {
+                method: 'DELETE',
+            })
+            .then((response) => response.json())
+            .then((data) => (window.location.href = data.redirect))
+            .catch((err) => console.log(err))
+        })
+    </script>
+</body>
+</html>
